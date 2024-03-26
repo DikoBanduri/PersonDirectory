@@ -1,36 +1,30 @@
-using Microsoft.EntityFrameworkCore;
 using PersonDirectory.Api.Configuration;
-using PersonDirectory.Repository;
 
-public class Program
-{
-    private static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-        builder.Services.AddRazorPages();
-        var app = builder.Build();
+// Add services to the container.
 
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+builder.Services.AddControllers();
 
-        builder.ConfigureDependency();
+builder.ConfigureDependency();
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
-        app.UseRouting();
+var app = builder.Build();
 
-        app.UseAuthorization();
+// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
-        app.MapRazorPages();
+app.UseHttpsRedirection();
 
-        app.Run();
-    }
-}
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
