@@ -15,7 +15,7 @@ public static class DependencyConfiguration
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddScoped<IPersonService, PersonService>();
-        //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddDbContext<DirectoryDbContext>(options => options.UseSqlServer(connectionString));
     }
 }

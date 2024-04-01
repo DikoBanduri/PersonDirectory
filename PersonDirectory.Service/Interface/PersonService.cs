@@ -27,6 +27,11 @@ public sealed class PersonService : IPersonService
         return person;
     }
 
+    public List<Person> GetPersonRelation(DTO.Type relationshipType)
+    {
+        return _unitOfWork.PersonRepository.GetPersonByRelation(relationshipType);
+    }
+
     public void DeletePerson(int personId)
     {
         var person = _unitOfWork.PersonRepository.Get(personId);
