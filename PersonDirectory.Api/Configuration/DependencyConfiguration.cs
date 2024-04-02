@@ -14,11 +14,8 @@ public static class DependencyConfiguration
         if (builder == null) throw new ArgumentNullException(nameof(builder));
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        //builder.Services.AddScoped<ICityService, CityService>();
-        //builder.Services.AddScoped<IPersonService, PersonService>();
-        //builder.Services.AddScoped<IPhoneService, PhoneService>();
-        //builder.Services.AddScoped<IRelationService, RelationService>();
-        //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddDbContext<DirectoryDbContext>(options => options.UseSqlServer(connectionString));
+        builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
