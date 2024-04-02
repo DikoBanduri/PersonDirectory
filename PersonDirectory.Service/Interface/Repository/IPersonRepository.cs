@@ -4,6 +4,6 @@ namespace PersonDirectory.Service.Interface.Repository;
 
 public interface IPersonRepository : IRepositoryBase<Person>
 {
-    List<Person> GetPersonByRelation(DTO.Type relationshipType);
+    List<Person> GetPersonRelation(DTO.Type relationType);
 }
 

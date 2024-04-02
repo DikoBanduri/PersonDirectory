@@ -13,11 +13,6 @@ internal sealed class PersonRepository : RepositoryBase<Person>, IPersonReposito
 
     }
 
-    public List<Person> GetPersonByRelation(DTO.Type relationshipType)
-    {
-        throw new NotImplementedException();
-    }
-
     public List<Person> GetPersonRelation(DTO.Type relationType)
     {
         return _context.Relations

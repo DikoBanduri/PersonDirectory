@@ -1,6 +1,6 @@
 ﻿namespace PersonDirectory.Service.Interface.Repository;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork
 {
     ICityRepository CityRepository { get;}
     IPersonRepository PersonRepository { get;}
@@ -10,4 +10,7 @@ public interface IUnitOfWork : IDisposable
     void BeginTransaction();
     void CommitTransaction();
     void RollBack();
+
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
 }

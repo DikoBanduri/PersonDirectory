@@ -1,6 +1,7 @@
 ﻿using PersonDirectory.DTO;
 using PersonDirectory.Service.Interface.IService;
 using PersonDirectory.Service.Interface.Repository;
+using System.Linq.Expressions;
 
 namespace PersonDirectory.Service.Interface;
 
@@ -13,30 +14,23 @@ public sealed class PersonService : IPersonService
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<Person> GetPeople()
+    public async Task<Person> GetById(int id)
     {
-        return _unitOfWork.PersonRepository.GetAll();
+        var res = await _unitOfWork.PersonRepository.GetAsync(id);
+        return res;
     }
 
-    public Person GetById(int id)
+    public async Task<IEnumerable<Person>> GetAllAsync(Expression<Func<Person, bool>> expression) =>
+        await _unitOfWork.PersonRepository.GetAllAsync(expression);
+  
+    public void Insert(Person person)
     {
-        return _unitOfWork.PersonRepository.Get(id);
+        if (person != null) throw new ArgumentNullException("Person Id must be empty");
+
+         _unitOfWork.PersonRepository.Insert(person);        
     }
 
-    public List<Person> GetPersonRelation(DTO.Type relationType)
-    {
-        return _unitOfWork.PersonRepository.GetPersonByRelation(relationType);
-    }
-
-    public void CreatePerson(Person person)
-    {
-        if (person == null) throw new ArgumentNullException("person is not found");
-
-        _unitOfWork.PersonRepository.Insert(person);
-        _unitOfWork.SaveChanges();
-    }
-
-    public void UpdatePerson(Person person)
+    public void Update(Person person)
     {
         if (person == null) throw new ArgumentNullException("person is not found");
 
@@ -44,9 +38,9 @@ public sealed class PersonService : IPersonService
         _unitOfWork.SaveChanges();
     }
 
-    public void DeletePerson(int personId)
+    public void Delete(int id)
     {
-        var person = _unitOfWork.PersonRepository.Get(personId);
+        Person person = _unitOfWork.PersonRepository.Get(id) ?? throw new ArgumentNullException("Id does not exist");
         person.IsDelete = true;
         _unitOfWork.PersonRepository.Update(person);
         _unitOfWork.SaveChanges();

@@ -17,17 +17,14 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
     public T Get(params object[] id) =>
        _dbSet.Find(id) ?? throw new KeyNotFoundException($"Record with key {id} not found");
+    public T Get(Expression<Func<T, bool>> expression) =>
+        _dbSet.FirstOrDefault(expression) ?? throw new KeyNotFoundException($"Record with key {expression} not found");
 
-    public IEnumerable<T> GetAll()
-    {
-        return _dbSet.AsEnumerable();
-    }
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>> expression) =>
+        _dbSet.Where(expression).AsEnumerable();
 
-    public IQueryable<T> Set(Expression<Func<T, bool>> predicate) =>
-        _dbSet.Where(predicate);
-
-    public IQueryable<T> Set() =>
-        _dbSet;
+    public IEnumerable<T> GetAll() =>
+        _dbSet.AsEnumerable();
 
     public void Insert(T entity) =>
         _dbSet.Add(entity);
@@ -50,10 +47,6 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
             Update(entity);
         }
     }
-
-    public void Delete(object id) =>
-        Delete(Get(id));
-
     public void Delete(T entity)
     {
         if (_context.Entry(entity).State == EntityState.Detached)
@@ -63,4 +56,18 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
         _dbSet.Remove(entity);
     }
+
+    public void Delete(object id) =>
+    Delete(Get(id));
+
+    public async Task<T> GetAsync(params object[] id) => await _dbSet.FindAsync(id) ?? throw new KeyNotFoundException();
+
+    //public async Task<T> GetAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default) =>
+       // await _dbSet.FirstOrDefaultAsync(expression);
+
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) =>
+       await _dbSet.ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default) =>
+        await _dbSet.Where(expression).ToListAsync(cancellationToken);
 }

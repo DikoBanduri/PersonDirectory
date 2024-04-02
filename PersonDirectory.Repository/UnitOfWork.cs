@@ -1,4 +1,5 @@
-﻿using PersonDirectory.Service.Interface.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonDirectory.Service.Interface.Repository;
 
 namespace PersonDirectory.Repository;
 
@@ -68,9 +69,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public void Dispose()
-    {
-        _context.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public async Task CommitTransactionAsync()
+    => await _context.SaveChangesAsync();
+
+    public async Task RollbackTransactionAsync()
+    => await _context.DisposeAsync();
 }

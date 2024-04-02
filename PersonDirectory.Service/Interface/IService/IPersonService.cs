@@ -1,13 +1,13 @@
 ﻿using PersonDirectory.DTO;
+using System.Linq.Expressions;
 
 namespace PersonDirectory.Service.Interface.IService;
 
 public interface IPersonService
 {
-    IEnumerable<Person> GetPeople();
-    Person GetById(int  id);
-    List<Person> GetPersonRelation(DTO.Type relationType);
-    void CreatePerson(Person person);
-    void UpdatePerson(Person person);
-    void DeletePerson(int personId);
+    Task<Person> GetById(int id);
+    Task<IEnumerable<Person>> GetAllAsync(Expression<Func<Person, bool>> expression);
+    void Insert(Person person);
+    void Update(Person person);
+    void Delete(int id);
 }

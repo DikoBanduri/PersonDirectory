@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PersonDirectory.DTO\PersonDirectory.DTO.csproj" />
   </ItemGroup>
 
