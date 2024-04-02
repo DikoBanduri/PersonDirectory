@@ -20,8 +20,8 @@ public sealed class PersonService : IPersonService
         return res;
     }
 
-    public async Task<IEnumerable<Person>> GetAllAsync(Expression<Func<Person, bool>> expression) =>
-        await _unitOfWork.PersonRepository.GetAllAsync(expression);
+    public async Task<IEnumerable<Person>> GetPeople() =>
+        await _unitOfWork.PersonRepository.GetAllAsync();
   
     public void Insert(Person person)
     {

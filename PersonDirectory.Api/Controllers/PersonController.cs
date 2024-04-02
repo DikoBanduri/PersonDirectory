@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonDirectory.Api.Contracts;
+using PersonDirectory.DTO;
 using PersonDirectory.Service.Interface.IService;
 
 namespace PersonDirectory.Api.Controllers;
@@ -10,20 +11,19 @@ namespace PersonDirectory.Api.Controllers;
 public class PersonController : Controller
 {
     private readonly IPersonService _personService;
+    private IPersonService _id; 
+
     public IActionResult Index()
     {
         return View();
     }
 
-    public PersonController(IPersonService personService)
-    {
-        _personService = personService;
-    }
+    public PersonController(IPersonService personService) => _personService = personService;
 
     [HttpGet]
-    public async Task<ActionResult<List<PersonResponse>>> GetPerson()
+    public async Task<ActionResult<List<PersonResponse>>> GetPeople()
     {
-        var person = await _personService.GetById();
-
+        var person = await _personService.GetPeople();
+        return View(person);
     }
 }
