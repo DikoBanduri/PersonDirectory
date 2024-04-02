@@ -18,6 +18,11 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     public T Get(params object[] id) =>
        _dbSet.Find(id) ?? throw new KeyNotFoundException($"Record with key {id} not found");
 
+    public IEnumerable<T> GetAll()
+    {
+        return _dbSet.AsEnumerable();
+    }
+
     public IQueryable<T> Set(Expression<Func<T, bool>> predicate) =>
         _dbSet.Where(predicate);
 

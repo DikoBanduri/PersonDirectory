@@ -13,6 +13,21 @@ public sealed class PersonService : IPersonService
         _unitOfWork = unitOfWork;
     }
 
+    public IEnumerable<Person> GetPeople()
+    {
+        return _unitOfWork.PersonRepository.GetAll();
+    }
+
+    public Person GetById(int id)
+    {
+        return _unitOfWork.PersonRepository.Get(id);
+    }
+
+    public List<Person> GetPersonRelation(DTO.Type relationType)
+    {
+        return _unitOfWork.PersonRepository.GetPersonByRelation(relationType);
+    }
+
     public void CreatePerson(Person person)
     {
         if (person == null) throw new ArgumentNullException("person is not found");
@@ -21,29 +36,18 @@ public sealed class PersonService : IPersonService
         _unitOfWork.SaveChanges();
     }
 
-    public Person GetById(int id)
+    public void UpdatePerson(Person person)
     {
-        var person = _unitOfWork.PersonRepository.Get(id);
-        return person;
-    }
+        if (person == null) throw new ArgumentNullException("person is not found");
 
-    public List<Person> GetPersonRelation(DTO.Type relationshipType)
-    {
-        return _unitOfWork.PersonRepository.GetPersonByRelation(relationshipType);
+        _unitOfWork.PersonRepository.Update(person);
+        _unitOfWork.SaveChanges();
     }
 
     public void DeletePerson(int personId)
     {
         var person = _unitOfWork.PersonRepository.Get(personId);
         person.IsDelete = true;
-        _unitOfWork.PersonRepository.Update(person);
-        _unitOfWork.SaveChanges();
-    }
-
-    public void UpdatePerson(Person person)
-    {
-        if (person == null) throw new ArgumentNullException("person is not found");
-
         _unitOfWork.PersonRepository.Update(person);
         _unitOfWork.SaveChanges();
     }

@@ -4,6 +4,7 @@ namespace PersonDirectory.Service.Interface.Repository;
 
 public interface IRepositoryBase<T> where T : class
 {
+    IEnumerable<T> GetAll();
     T Get(params object[] id);
     IQueryable<T> Set(Expression<Func<T, bool>> predicate);
     IQueryable<T> Set();
